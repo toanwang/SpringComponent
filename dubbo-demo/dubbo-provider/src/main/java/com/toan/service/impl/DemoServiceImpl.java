@@ -1,7 +1,7 @@
 package com.toan.service.impl;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
-import com.toan.dubbo3.api.DemoService;
+import com.toan.dubbo.api.DemoService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import java.util.concurrent.atomic.AtomicLong;
