@@ -1,4 +1,4 @@
-package com.toan.dubbo3.api;
+package com.toan.dubbo.api;
 
 public interface DemoService {
 
