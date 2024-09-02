@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+#nacos:
+#  config:
+#    # 指定命名空间
+#    namespace: 30e4480b-f903-4d26-8084-cedff611a340
+#    #配置服务地址
+#    server-addr: localhost:8848
+#    username: nacos
+#    password: nacos
+#    #data-ids 为新增加的data-id
+#    data-ids: dubbo3-provider
+#    #配置类型
+#    type: yaml
+#    #是否启动刷新配置
+#    autoRefresh: true
+#    #运行时启用
+#    bootstrap:
+#      enable: true
+
+dubbo:
+  application:
+    name: dubbo-provider #服务名称
+    version: 1.0.0 # 服务版本号
+  registry:
+    address: nacos://localhost:8848?namespace=30e4480b-f903-4d26-8084-cedff611a340&username=nacos&password=nacos
+  protocol:
+    name: dubbo
+#    port: 20888
+
+dubboParams: "toan-test-0905"
