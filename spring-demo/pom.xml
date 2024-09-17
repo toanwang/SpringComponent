@@ -28,6 +28,7 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>resource-resolver</module>
+      <module>IOC-demo</module>
   </modules>
 
   <properties>
