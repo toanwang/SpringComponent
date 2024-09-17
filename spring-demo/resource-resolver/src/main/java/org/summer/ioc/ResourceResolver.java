@@ -27,6 +27,8 @@ public class ResourceResolver {
         String basePackagePath = this.basePackage.replace(".", "/");
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        /* getResource在指定的类路径下搜索，寻找与资源名称匹配的文件，返回第一个资源的 URL
+        */
         Enumeration<URL> resources = classLoader.getResources(basePackagePath);
 
         ArrayList<String> collector = new ArrayList<>();
