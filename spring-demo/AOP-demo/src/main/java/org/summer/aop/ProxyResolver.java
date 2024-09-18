@@ -15,15 +15,22 @@ public class ProxyResolver {
     public <T> T createProxy(final T bean, final InvocationHandler handler){
         Class<?> targetClass = bean.getClass();
         Class<?> proxyClass = this.buddy
+                // 使用指定构造策略，构造一个继承targetClass的子类
                 .subclass(targetClass, ConstructorStrategy.Default.DEFAULT_CONSTRUCTOR)
-                .method(ElementMatchers.isPublic()).intercept(InvocationHandlerAdapter.of(
+                // 选择目标类中的公共方法
+                .method(ElementMatchers.isPublic())
+                // 设置拦截器，是实现InvocationHandler接口的类
+                .intercept(InvocationHandlerAdapter.of(
                         new InvocationHandler() {
+                            // 拦截器的invoke实现，对象+方法+参数
                             public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
                                 return handler.invoke(bean, method, objects);
                             }
                         }
                 ))
+                // 创建代理类
                 .make()
+                // 使用目标类相同的类加载器
                 .load(targetClass.getClassLoader()).getLoaded();
         Object proxy;
         try{
