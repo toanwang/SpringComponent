@@ -27,8 +27,10 @@
   <name>SpringDemo</name>
   <url>http://maven.apache.org</url>
   <modules>
-    <module>resource-resolver</module>
-      <module>IOC-demo</module>
+    <module>IOC-demo/resource-resolver</module>
+    <module>IOC-demo/property-resolver</module>
+    <module>IOC-demo/create-bean-definitions</module>
+    <module>IOC-demo/create-bean-instances</module>
   </modules>
 
   <properties>
