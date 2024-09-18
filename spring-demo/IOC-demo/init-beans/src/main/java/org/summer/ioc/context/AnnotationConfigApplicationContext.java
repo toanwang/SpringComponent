@@ -24,25 +24,25 @@ public class AnnotationConfigApplicationContext {
 
     public AnnotationConfigApplicationContext(Class<?> configClass, PropertyResolver propertyResolver) throws IOException, URISyntaxException {
         this.propertyResolver = propertyResolver;
-        // 扫描路径下的所有文件
+        // 根据启动类，扫描路径下的所有文件
         final Set<String> beanClassNames = scanForClassName(configClass);
         // 创建bean定义
         this.beans = createBeanDefinitions(beanClassNames);
 
-        // 检测循环依赖
+        // 使用set，检测循环依赖
         this.creatingBeanNames = new HashSet<>();
 
-        // 先处理configuration注解
+        // 先处理configuration注解，处理依赖注入
         this.beans.values().stream()
                 .filter(this::isConfigurationDefinition)
                 .sorted().map(def -> {
                     createBeanAsEarlySingleton(def);
                     return def.getName();
                 }).collect(Collectors.toList());
-
+        // 初始化其他bean
         createNormalBeans();
 
-        // 依赖注入；初始化
+        // 属性和方法注入
         this.beans.values().forEach(def -> {
             injectBean(def);
         });
