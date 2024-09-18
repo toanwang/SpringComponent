@@ -4,12 +4,10 @@ SpringBoot+dubbo+nacos, 一个简单的demo
 ## Spring-demo
 ### resource-resolver (@ComponentScan)
 资源解析器:根据指定的路径寻找可用的class
-在编写IoC容器之前，我们首先要实现@ComponentScan，即解决“在指定包下扫描所有Class”的问题。
-Java的ClassLoader机制可以在指定的Classpath中根据类名加载指定的Class，但遗憾的是，给出一个包名，例如，org.example，它并不能获取到该包下的所有Class，也不能获取子包。
-要在Classpath中扫描指定包名下的所有Class，包括子包，实际上是在Classpath中搜索所有文件，找出文件名匹配的.class文件。
-例如，Classpath中搜索的文件org/example/Hello.class就符合包名org.example，
-我们需要根据文件路径把它变为org.example.Hello，就相当于获得了类名。
-因此，搜索Class变成了搜索文件。
+* 目的：在编写IoC容器之前，我们首先要实现@ComponentScan，即解决“在指定包下扫描所有Class”的问题
+1. Java的ClassLoader机制可以在指定的Classpath中根据类名加载指定的Class，但给出一个包名，例如，org.example，它并不能获取到该包下的所有Class，也不能获取子包
+2. 要在Classpath中扫描指定包名下的所有Class，包括子包，实际上是在Classpath中搜索所有文件，找出文件名匹配的.class文件，例如，Classpath中搜索的文件org/example/Hello.class就符合包名org.example，我们需要根据文件路径把它变为org.example.Hello，就相当于获得了类名。
+3. 因此，搜索Class变成了搜索文件。
 ### property-resolver
 属性解析器:获取配置文件中的信息
 ### BeanDefinition
@@ -31,7 +29,8 @@ Bean实例化(注入)主要是两种方法，Spring框架推荐 构造函数注�
 1. 对字段进行依赖注入
 2. init初始化bean
 ## 大概流程
-1. 初始化需要传入启动文件的class对象
-   查看是否使用了注解指定扫描路径
-   如果没有指定，使用类加载器获取当前文件所在的路径，扫描此路径下的class文件；如果指定，扫描指定路径下的class文件
-2. 
+1. 初始化需要传入启动文件的class对象，查看是否使用了注解指定扫描路径，如果没有指定，使用类加载器获取当前文件所在的路径，扫描此路径下的class文件；如果指定，扫描指定路径下的class文件
+2. 获取bean定义：根据第一步加载出来的对象，获取bean的基础定义
+3. bean实例化：进行依赖注入，此处会有循环依赖的问题
+4. PostProcessors：自定义过程，在实例化和初始化之前可以有额外的操作
+5. bean初始化：一些属性设置，以及有PostConstruct注解方法
