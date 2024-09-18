@@ -31,6 +31,7 @@
     <module>IOC-demo/property-resolver</module>
     <module>IOC-demo/create-bean-definitions</module>
     <module>IOC-demo/create-bean-instances</module>
+      <module>AOP-demo</module>
   </modules>
 
   <properties>
