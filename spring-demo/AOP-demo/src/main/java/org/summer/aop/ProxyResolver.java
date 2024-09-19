@@ -13,6 +13,7 @@ public class ProxyResolver {
     ByteBuddy buddy = new ByteBuddy();
 
     public <T> T createProxy(final T bean, final InvocationHandler handler){
+        // 获取原始类对象
         Class<?> targetClass = bean.getClass();
         Class<?> proxyClass = this.buddy
                 // 使用指定构造策略，构造一个继承targetClass的子类
@@ -22,8 +23,9 @@ public class ProxyResolver {
                 // 设置拦截器，是实现InvocationHandler接口的类
                 .intercept(InvocationHandlerAdapter.of(
                         new InvocationHandler() {
-                            // 拦截器的invoke实现，对象+方法+参数
+                            // 拦截器的invoke实现，对象+方法+参数，此处的invoke传入的是proxy实例
                             public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
+                                // 内层invoke将调用转发到原始Bean
                                 return handler.invoke(bean, method, objects);
                             }
                         }
@@ -31,7 +33,9 @@ public class ProxyResolver {
                 // 创建代理类
                 .make()
                 // 使用目标类相同的类加载器
-                .load(targetClass.getClassLoader()).getLoaded();
+                .load(targetClass.getClassLoader())
+                // 将动态类加载到JVM，并且获得class对象
+                .getLoaded();
         Object proxy;
         try{
             proxy = proxyClass.getConstructor().newInstance();
