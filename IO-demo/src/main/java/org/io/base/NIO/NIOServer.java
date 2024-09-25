@@ -7,7 +7,8 @@ import java.nio.channels.*;
 import java.util.Iterator;
 
 public class NIOServer {
-    private Selector selector;   private ServerSocketChannel ssChannel;
+    private Selector selector;
+    private ServerSocketChannel ssChannel;
     private static final int PORT = 9999;
 
     public NIOServer() throws IOException {
@@ -19,7 +20,7 @@ public class NIOServer {
         ssChannel.bind(new InetSocketAddress(PORT));
         // 通道设置为非阻塞
         ssChannel.configureBlocking(false);
-        // 通道注册到选择器上
+        // 通道注册到选择器上，关注OP_ACCEPT事件(建立连接)
         ssChannel.register(selector, SelectionKey.OP_ACCEPT);
     }
 
@@ -39,7 +40,7 @@ public class NIOServer {
                     // 设置为非阻塞
                     sChannel.configureBlocking(false);
                     System.out.println(sChannel.getRemoteAddress() + " 上线");
-                    // 通道注册到选择器上
+                    // 通道注册到选择器上, 关注OP_READ事件(读就绪事件)
                     sChannel.register(selector, SelectionKey.OP_READ);
                 }else if(sk.isReadable()){
                     readClientData(sk);
